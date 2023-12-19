@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/patients_vu/patient_form/patient_form_vu.dart';
 import 'package:stacked/stacked.dart';
 
 import 'patient_vm.dart';
@@ -40,120 +39,36 @@ class PatientVU extends StackedView<PatientVM> {
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Search Patient',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  suffixIcon: const Icon(Icons.search, color: Colors.grey),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: viewModel.patientsList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          width: MediaQuery.sizeOf(context).width,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${viewModel.patientsList[index].patientName}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      '${viewModel.patientsList[index].regNo}',
-                                      style: const TextStyle(
-                                          color: Colors.grey, fontSize: 14),
-                                    ),
-                                    IntrinsicHeight(
-                                        child: Row(
-                                      children: [
-                                        Text(
-                                          '${viewModel.patientsList[index].gender}',
-                                          style: const TextStyle(
-                                              color: Colors.grey, fontSize: 14),
-                                        ),
-                                        const VerticalDivider(
-                                          color: Colors.grey,
-                                        ),
-                                        Text(
-                                          '${viewModel.patientsList[index].age}',
-                                          style: const TextStyle(
-                                              color: Colors.grey, fontSize: 14),
-                                        ),
-                                      ],
-                                    )),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return PatientFormVU(
-                                        patient: viewModel.patientsList[index],
-                                      );
-                                    })).then((value) {
-                                      if (value != null) {
-                                        viewModel.onUpdatePatient(value, index);
-                                      }
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.green,
-                                  )),
-                              IconButton(
-                                  onPressed: () {
-                                    viewModel.onDeletePatient(index);
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline,
-                                    color: Colors.red,
-                                  )),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              )
-            ],
-          ),
+        body: Center(
+          child: viewModel.widgetOptions.elementAt(viewModel.selectedIndex),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return PatientFormVU();
-            })).then((value) {
-              if (value != null) {
-                viewModel.onAddPatient(value);
-              }
-            });
-          },
-          child: const Icon(Icons.add),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home_outlined,
+              ),
+              label: 'Observations',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_2_outlined),
+              label: 'Patients',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.call_outlined),
+              label: 'Call',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.mail_outline),
+              label: 'Chat',
+            ),
+          ],
+          currentIndex: viewModel.selectedIndex,
+          selectedItemColor: Colors.blue.shade900,
+          onTap: viewModel.onItemTapped,
+          unselectedIconTheme: const IconThemeData(color: Colors.black),
+          unselectedItemColor: Colors.black,
+          showUnselectedLabels: true,
         ),
       );
 
