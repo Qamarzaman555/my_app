@@ -33,7 +33,7 @@ class WhatsappVU extends StackedView<WhatsappVM> {
                 icon: const Icon(Icons.more_vert, color: Colors.white),
               ),
             ],
-            bottom: TabBar(
+            bottom: const TabBar(
               indicatorWeight: 4,
               indicatorSize: TabBarIndicatorSize.tab,
               unselectedLabelColor: Colors.white54,
