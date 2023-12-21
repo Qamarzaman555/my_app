@@ -4,12 +4,12 @@ import 'package:stacked/stacked.dart';
 
 class PatientFormVM extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
-  PatientModel? patient;
+  PatientModel patient = PatientModel();
 
-  String? name;
-  String? regNo;
-  String? gender;
-  int? age;
+  // String? name;
+  // String? regNo;
+  // String? gender;
+  // int? age;
 
   String? onPatientNameValidator(String? value) {
     if (value == null || value.isEmpty) {
@@ -39,32 +39,27 @@ class PatientFormVM extends BaseViewModel {
     return null;
   }
 
-  onSavedPatient(BuildContext context) {
-    if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      patient = PatientModel(
-        patientName: name,
-        regNo: regNo,
-        gender: gender,
-        age: age,
-      );
-      Navigator.pop(context, patient);
-    }
-  }
-
-  onPatientNameSaved(String? value) {
-    name = value;
+  onPatientNameSaved(value) {
+    patient.patientName = value!;
   }
 
   onRegNoSaved(String? value) {
-    regNo = value;
+    patient.regNo = value!;
   }
 
   onGenderSaved(String? value) {
-    gender = value;
+    patient.gender = value!;
   }
 
   onAgeSaved(String? value) {
-    age = int.parse(value!);
+    patient.age = int.parse(value!);
+  }
+
+  onSavedPatient(BuildContext context) {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+
+      Navigator.pop(context, patient);
+    }
   }
 }
